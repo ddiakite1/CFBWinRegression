@@ -1,0 +1,134 @@
+---
+title: "final_project"
+author: "Diassa Diakite"
+date: "2/24/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readxl)
+library(janitor)
+library(plotly)
+library(tidyverse)
+```
+
+```{r, message=FALSE}
+# message=FALSE so messages on updated column names does not come up
+# load in SEC 2019 data
+sec19 <- read_excel("SEC/sec19.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2019) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# load in SEC 2018 data
+sec18 <- read_excel("SEC/sec18.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2018) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create SEC dataset
+sec <- sec19 %>%
+  full_join(sec18, by = NULL)
+
+# load in SEC 2017 data
+sec17 <- read_excel("SEC/sec17.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2017) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create SEC dataset
+sec <- sec %>%
+  full_join(sec17, by = NULL)
+
+# load in SEC 2016 data
+sec16 <- read_excel("SEC/sec16.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2016) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create SEC dataset
+sec <- sec %>%
+  full_join(sec16, by = NULL)
+
+# load in SEC 2015 data
+sec15 <- read_excel("SEC/sec15.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2015) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create SEC dataset
+sec <- sec %>%
+  full_join(sec15, by = NULL)
+
+# load in SEC 2014 data
+sec14 <- read_excel("SEC/sec14.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2014) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create SEC dataset
+sec <- sec %>%
+  full_join(sec14, by = NULL)
+
+# load in SEC 2013 data
+sec13 <- read_excel("SEC/sec13.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2013) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create SEC dataset
+sec <- sec %>%
+  full_join(sec13, by = NULL)
+
+# load in SEC 2012 data
+sec12 <- read_excel("SEC/sec12.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2012) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create SEC dataset
+sec <- sec %>%
+  full_join(sec12, by = NULL)
+
+# load in SEC 2011 data
+sec11 <- read_excel("SEC/sec11.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2011) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create SEC dataset
+sec <- sec %>%
+  full_join(sec11, by = NULL)
+
+# load in SEC 2010 data
+sec10 <- read_excel("SEC/sec10.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2010) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create SEC dataset
+sec <- sec %>%
+  full_join(sec10, by = NULL)
+```
+
+```{r }
+secRushTrend <- sec %>%
+  ggplot(aes(x = year, y = r_att)) +
+   facet_wrap(~school) +
+  geom_line()
+secRushTrend
+ggplotly(secRushTrend)
+
+
+```
