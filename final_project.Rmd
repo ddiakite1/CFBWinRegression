@@ -4,7 +4,12 @@ author: "Diassa Diakite"
 date: "2/24/2020"
 output: html_document
 ---
+*link to github repository:* https://github.com/ddiakite1/final_project.git
 
+## About  
+  Growing up, football was always a big part of my life. In an attempt to win games, teams differing amounts of run and pass plays. Over time, you can see that running the ball and passing the ball have varying success rates year by year. In this project I will study the trends in teams being more likely to run/pass the ball, and the success of each at certain time periods.  
+  Along with this, there are five major conferences in college football, often referred to as the "Power 5". These five conferences are as follows: the BIG 10, the PAC 12, the SEC, the BIG 12, and the ACC. From these five conferences come majority of the powerhouse teams in college football, as well as the most successful teams. Within each conference, teams play each other and a conference champion is determined by a conference championship game. Now, there is even a four team playoff system to determine the sole national champion. By exploring data from 2010 to present date in each of these power five conferences, I will be able to determine which play styles work best in each conference as well as on a countrywide scale, and I could draw comparisons and contrasts between conferences.
+  
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(readxl)
@@ -13,9 +18,12 @@ library(plotly)
 library(tidyverse)
 ```
 
-```{r, message=FALSE}
+## Data
+```{r, echo = FALSE, message = FALSE}
 # message=FALSE so messages on updated column names does not come up
+# echo = FALSE so that all of the code is not shown in the html
 # load in SEC 2019 data
+
 sec19 <- read_excel("SEC/sec19.xls",skip=1) %>%
   clean_names() %>%
   mutate(year = 2019) %>%
@@ -122,12 +130,16 @@ sec <- sec %>%
   full_join(sec10, by = NULL)
 ```
 
-```{r }
+```{r, echo = FALSE, message=FALSE}
+# message=FALSE so messages on updated column names does not come up
+# echo = FALSE so that all of the code is not shown in the html
+
+#create a plot using data on rushing attempts per year for each school
 secRushTrend <- sec %>%
   ggplot(aes(x = year, y = r_att)) +
    facet_wrap(~school) +
   geom_line()
-secRushTrend
+
 ggplotly(secRushTrend)
 
 
