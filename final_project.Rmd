@@ -142,7 +142,8 @@ sec <- sec %>%
 secRushTrend <- sec %>%
   ggplot(aes(x = year, y = r_att)) +
    facet_wrap(~school) +
-  geom_line()
+  geom_line() +
+  labs(y = "Avg. Rushing Attempts per Game")
 
 ggplotly(secRushTrend)
 
