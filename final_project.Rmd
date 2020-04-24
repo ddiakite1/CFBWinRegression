@@ -6,14 +6,14 @@ output: html_document
 ---
 *link to github repository:* https://github.com/ddiakite1/final_project.git
 
-## About  
+## About 
   Growing up, football was always a big part of my life. In an attempt to win games, teams differing amounts of run and pass plays. Over time, you can see that running the ball and passing the ball have varying success rates year by year. In this project I will study the trends in teams being more likely to run/pass the ball, and the success of each at certain time periods.
   
   Along with this, there are five major conferences in college football, often referred to as the "Power 5". These five conferences are as follows: the BIG 10, the PAC 12, the SEC, the BIG 12, and the ACC. From these five conferences come majority of the powerhouse teams in college football, as well as the most successful teams. Within each conference, teams play each other and a conference champion is determined by a conference championship game. Now, there is even a four team playoff system to determine the sole national champion. By exploring data from 2010 to present date in each of these power five conferences, I will be able to determine which play styles work best in each conference as well as on a countrywide scale, and I could draw comparisons and contrasts between conferences.
   
   As for my data, I collected it from multiple different sports-reference.com subpages. The datasests that I get from sports-reference.com are downloaded as excel files, and I read them in using read_excel() inside the readxl library. I plan on reading in the data from all Power 5 conferences for the 2010-2019 college football seasons, and modeling correlations between team success and team rushing/passing success.
   
-  
+## Setup Chunk
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(readxl)
@@ -23,7 +23,8 @@ library(tidyverse)
 ```
 
 ## Data
-```{r, echo = FALSE, message = FALSE}
+### SEC Data
+```{r, echo = FALSE, message = FALSE, cache=TRUE}
 # message=FALSE so messages on updated column names does not come up
 # echo = FALSE so that all of the code is not shown in the html
 # load in SEC 2019 data
@@ -134,6 +135,456 @@ sec <- sec %>%
   full_join(sec10, by = NULL)
 ```
 
+### B1G 10 Data
+```{r, echo = FALSE, message = FALSE, cache=TRUE}
+# message=FALSE so messages on updated column names does not come up
+# echo = FALSE so that all of the code is not shown in the html
+# load in B1G 10 2019 data
+
+b1g19 <- read_excel("B1G10/b1g19.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2019) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# load in B1G 2018 data
+b1g18 <- read_excel("B1G10/b1g18.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2018) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create B1G dataset
+b1g <- b1g19 %>%
+  full_join(b1g18, by = NULL)
+
+# load in B1G 2017 data
+b1g17 <- read_excel("B1G10/b1g17.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2017) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create B1G dataset
+b1g <- b1g %>%
+  full_join(b1g17, by = NULL)
+
+# load in B1G 2016 data
+b1g16 <- read_excel("B1G10/b1g16.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2016) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create B1G dataset
+b1g <- b1g %>%
+  full_join(b1g16, by = NULL)
+
+# load in B1G 2015 data
+b1g15 <- read_excel("B1G10/b1g15.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2015) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create B1G dataset
+b1g <- b1g %>%
+  full_join(b1g15, by = NULL)
+
+# load in B1G 2014 data
+b1g14 <- read_excel("B1G10/b1g14.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2014) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create B1G dataset
+b1g <- b1g %>%
+  full_join(b1g14, by = NULL)
+
+# load in B1G 2013 data
+b1g13 <- read_excel("B1G10/b1g13.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2013) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create B1G dataset
+b1g <- b1g %>%
+  full_join(b1g13, by = NULL)
+
+# load in B1G 2012 data
+b1g12 <- read_excel("B1G10/b1g12.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2012) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create B1G dataset
+b1g <- b1g %>%
+  full_join(b1g12, by = NULL)
+
+# load in B1G 2011 data
+b1g11 <- read_excel("B1G10/b1g11.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2011) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create B1G dataset
+b1g <- b1g %>%
+  full_join(b1g11, by = NULL)
+
+# load in B1G 2010 data
+b1g10 <- read_excel("B1G10/b1g10.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2010) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create B1G dataset
+b1g <- b1g %>%
+  full_join(b1g10, by = NULL)
+```
+
+### BIG 12 Data
+```{r, echo = FALSE, message = FALSE, cache=TRUE}
+# message=FALSE so messages on updated column names does not come up
+# echo = FALSE so that all of the code is not shown in the html
+# load in Big 12 2019 data
+
+b1219 <- read_excel("BIG12/b1219.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2019) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# load in BIG12 2018 data
+b1218 <- read_excel("BIG12/b1218.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2018) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create BIG12 dataset
+b12 <- b1219 %>%
+  full_join(b1218, by = NULL)
+
+# load in BIG12 2017 data
+b1217 <- read_excel("BIG12/b1217.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2017) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create BIG12 dataset
+b12 <- b12 %>%
+  full_join(b1217, by = NULL)
+
+# load in BIG12 2016 data
+b1216 <- read_excel("BIG12/b1216.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2016) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create BIG12 dataset
+b12 <- b12 %>%
+  full_join(b1216, by = NULL)
+
+# load in BIG12 2015 data
+b1215 <- read_excel("BIG12/b1215.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2015) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create BIG12 dataset
+b12 <- b12 %>%
+  full_join(b1215, by = NULL)
+
+# load in BIG12 2014 data
+b1214 <- read_excel("BIG12/b1214.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2014) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create BIG12 dataset
+b12 <- b12 %>%
+  full_join(b1214, by = NULL)
+
+# load in BIG12 2013 data
+b1213 <- read_excel("BIG12/b1213.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2013) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create BIG12 dataset
+b12 <- b12 %>%
+  full_join(b1213, by = NULL)
+
+# load in BIG12 2012 data
+b1212 <- read_excel("BIG12/b1212.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2012) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create BIG12 dataset
+b12 <- b12 %>%
+  full_join(b1212, by = NULL)
+
+# load in BIG12 2011 data
+b1211 <- read_excel("BIG12/b1211.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2011) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create BIG12 dataset
+b12 <- b12 %>%
+  full_join(b1211, by = NULL)
+
+# load in BIG12 2010 data
+b1210 <- read_excel("BIG12/b1210.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2010) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create BIG12 dataset
+b12 <- b12 %>%
+  full_join(b1210, by = NULL)
+```
+
+### PAC 12 Data
+```{r, echo = FALSE, message = FALSE, cache=TRUE}
+# message=FALSE so messages on updated column names does not come up
+# echo = FALSE so that all of the code is not shown in the html
+# load in PAC12 2019 data
+
+pac19 <- read_excel("PAC12/pac19.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2019) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# load in PAC12 2018 data
+pac18 <- read_excel("PAC12/pac18.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2018) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create PAC12 dataset
+pac <- pac19 %>%
+  full_join(pac18, by = NULL)
+
+# load in PAC12 2017 data
+pac17 <- read_excel("PAC12/pac17.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2017) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create PAC12 dataset
+pac <- pac %>%
+  full_join(pac17, by = NULL)
+
+# load in PAC12 2016 data
+pac16 <- read_excel("PAC12/pac16.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2016) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create PAC12 dataset
+pac <- pac %>%
+  full_join(pac16, by = NULL)
+
+# load in PAC12 2015 data
+pac15 <- read_excel("PAC12/pac15.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2015) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create PAC12 dataset
+pac <- pac %>%
+  full_join(pac15, by = NULL)
+
+# load in PAC12 2014 data
+pac14 <- read_excel("PAC12/pac14.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2014) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create PAC12 dataset
+pac <- pac %>%
+  full_join(pac14, by = NULL)
+
+# load in PAC12 2013 data
+pac13 <- read_excel("PAC12/pac13.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2013) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create PAC12 dataset
+pac <- pac %>%
+  full_join(pac13, by = NULL)
+
+# load in PAC12 2012 data
+pac12 <- read_excel("PAC12/pac12.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2012) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create PAC12 dataset
+pac <- pac %>%
+  full_join(pac12, by = NULL)
+
+# load in PAC12 2011 data
+pac11 <- read_excel("PAC12/pac11.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2011) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create PAC12 dataset
+pac <- pac %>%
+  full_join(pac11, by = NULL)
+
+# load in PAC12 2010 data
+pac10 <- read_excel("PAC12/pac10.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2010) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create PAC12 dataset
+pac <- pac %>%
+  full_join(pac10, by = NULL)
+```
+
+### ACC Data
+```{r, echo = FALSE, message = FALSE, cache=TRUE}
+# message=FALSE so messages on updated column names does not come up
+# echo = FALSE so that all of the code is not shown in the html
+# load in ACC 2019 data
+
+acc19 <- read_excel("ACC/acc19.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2019) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# load in ACC 2018 data
+acc18 <- read_excel("ACC/acc18.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2018) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create ACC dataset
+acc <- acc19 %>%
+  full_join(acc18, by = NULL)
+
+# load in ACC 2017 data
+acc17 <- read_excel("ACC/acc17.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2017) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create ACC dataset
+acc <- acc %>%
+  full_join(acc17, by = NULL)
+
+# load in ACC 2016 data
+acc16 <- read_excel("ACC/acc16.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2016) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create ACC dataset
+acc <- acc %>%
+  full_join(acc16, by = NULL)
+
+# load in ACC 2015 data
+acc15 <- read_excel("ACC/acc15.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2015) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create ACC dataset
+acc <- acc %>%
+  full_join(acc15, by = NULL)
+
+# load in ACC 2014 data
+acc14 <- read_excel("ACC/acc14.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2014) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create ACC dataset
+acc <- acc %>%
+  full_join(acc14, by = NULL)
+
+# load in ACC 2013 data
+acc13 <- read_excel("ACC/acc13.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2013) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create ACC dataset
+acc <- acc %>%
+  full_join(acc13, by = NULL)
+
+# load in ACC 2012 data
+acc12 <- read_excel("ACC/acc12.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2012) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create ACC dataset
+acc <- acc %>%
+  full_join(acc12, by = NULL)
+
+# load in ACC 2011 data
+acc11 <- read_excel("ACC/acc11.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2011) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create ACC dataset
+acc <- acc %>%
+  full_join(acc11, by = NULL)
+
+# load in ACC 2010 data
+acc10 <- read_excel("ACC/acc10.xls",skip=1) %>%
+  clean_names() %>%
+  mutate(year = 2010) %>%
+  mutate(w_pct = w/(w+l), c_w_pct = c_w/(c_w+c_l)) %>%
+  select(year, w, l, w_pct, c_w, c_l, c_w_pct, school, p_cmp, p_att, p_pct, p_yds, p_td, r_att, r_yds, r_avg, r_td, fum, int)
+
+# full_join to create ACC dataset
+acc <- acc %>%
+  full_join(acc10, by = NULL)
+```
+
+
+## Data Fun
 ```{r, echo = FALSE, message=FALSE}
 # message=FALSE so messages on updated column names does not come up
 # echo = FALSE so that all of the code is not shown in the html
@@ -147,6 +598,5 @@ secRushTrend <- sec %>%
 
 ggplotly(secRushTrend)
 
-
+saveRDS(sec, file="SEC.RDS")
 ```
-
