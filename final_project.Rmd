@@ -598,5 +598,28 @@ secRushTrend <- sec %>%
 
 ggplotly(secRushTrend)
 
-saveRDS(sec, file="SEC.RDS")
+saveRDS(sec, file = "SEC.RDS")
+saveRDS(b1g, file = "B1G.RDS")
+saveRDS(b12, file = "B12.RDS")
+saveRDS(pac, file = "PAC.RDS")
+saveRDS(acc, file = "ACC.RDS")
+
+# Summarized Rushing and Passing data by conference
+secSum <- sec %>% group_by(year) %>% summarise(rushATT = mean(r_att), passATT = mean(p_att))
+b1gSum <- b1g %>% group_by(year) %>% summarise(rushATT = mean(r_att), passATT = mean(p_att))
+b12Sum <- b12 %>% group_by(year) %>% summarise(rushATT = mean(r_att), passATT = mean(p_att))
+pacSum <- pac %>% group_by(year) %>% summarise(rushATT = mean(r_att), passATT = mean(p_att))
+accSum <- acc %>% group_by(year) %>% summarise(rushATT = mean(r_att), passATT = mean(p_att))
+
+saveRDS(secSum, file = "secSum.RDS")
+saveRDS(b1gSum, file = "b1gSum.RDS")
+saveRDS(b12Sum, file = "b12Sum.RDS")
+saveRDS(pacSum, file = "pacSum.RDS")
+saveRDS(accSum, file = "accSum.RDS")
+
+# All CFB stats
+p5 <- full_join(sec, 
+      full_join(b1g, 
+      full_join(b12, 
+      full_join(pac, acc, by=NULL), by=NULL), by=NULL), by=NULL) %>% group_by(year)
 ```
