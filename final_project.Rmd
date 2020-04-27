@@ -18,7 +18,14 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 library(readxl)
 library(janitor)
+library(ggplot2)
+library(ggthemes)
+library(ggiraph)
 library(plotly)
+library(rgl)
+library(car)
+library(gt)
+library(shinythemes)
 library(tidyverse)
 ```
 
@@ -132,7 +139,7 @@ sec10 <- read_excel("SEC/sec10.xls",skip=1) %>%
 
 # full_join to create SEC dataset
 sec <- sec %>%
-  full_join(sec10, by = NULL)
+  full_join(sec10, by = NULL) %>% mutate(conference = "SEC")
 ```
 
 ### B1G 10 Data
@@ -244,7 +251,7 @@ b1g10 <- read_excel("B1G10/b1g10.xls",skip=1) %>%
 
 # full_join to create B1G dataset
 b1g <- b1g %>%
-  full_join(b1g10, by = NULL)
+  full_join(b1g10, by = NULL) %>% mutate(conference = "B1G 10")
 ```
 
 ### BIG 12 Data
@@ -356,7 +363,7 @@ b1210 <- read_excel("BIG12/b1210.xls",skip=1) %>%
 
 # full_join to create BIG12 dataset
 b12 <- b12 %>%
-  full_join(b1210, by = NULL)
+  full_join(b1210, by = NULL) %>% mutate(conference = "BIG 12")
 ```
 
 ### PAC 12 Data
@@ -468,7 +475,7 @@ pac10 <- read_excel("PAC12/pac10.xls",skip=1) %>%
 
 # full_join to create PAC12 dataset
 pac <- pac %>%
-  full_join(pac10, by = NULL)
+  full_join(pac10, by = NULL) %>% mutate(conference = "PAC 12")
 ```
 
 ### ACC Data
@@ -580,7 +587,7 @@ acc10 <- read_excel("ACC/acc10.xls",skip=1) %>%
 
 # full_join to create ACC dataset
 acc <- acc %>%
-  full_join(acc10, by = NULL)
+  full_join(acc10, by = NULL) %>% mutate(conference = "ACC")
 ```
 
 
@@ -591,12 +598,12 @@ acc <- acc %>%
 
 #create a plot using data on rushing attempts per year for each school
 secRushTrend <- sec %>%
-  ggplot(aes(x = year, y = r_att)) +
-   facet_wrap(~school) +
+  ggplot(aes(x = year, y = r_att, color = school)) +
+  geom_point_interactive(aes(tooltip = sec$r_att)) +
   geom_line() +
-  labs(y = "Avg. Rushing Attempts per Game")
+  labs(x = "Year", y = "Avg. Rushing Attempts per Game")
 
-ggplotly(secRushTrend)
+girafe(ggobj = secRushTrend)
 
 saveRDS(sec, file = "SEC.RDS")
 saveRDS(b1g, file = "B1G.RDS")
@@ -605,11 +612,26 @@ saveRDS(pac, file = "PAC.RDS")
 saveRDS(acc, file = "ACC.RDS")
 
 # Summarized Rushing and Passing data by conference
-secSum <- sec %>% group_by(year) %>% summarise(rushATT = mean(r_att), passATT = mean(p_att))
-b1gSum <- b1g %>% group_by(year) %>% summarise(rushATT = mean(r_att), passATT = mean(p_att))
-b12Sum <- b12 %>% group_by(year) %>% summarise(rushATT = mean(r_att), passATT = mean(p_att))
-pacSum <- pac %>% group_by(year) %>% summarise(rushATT = mean(r_att), passATT = mean(p_att))
-accSum <- acc %>% group_by(year) %>% summarise(rushATT = mean(r_att), passATT = mean(p_att))
+secSum <- sec %>% group_by(year) %>% summarise(rushATT = mean(r_att), rushYDS = mean(r_yds),
+                                               passATT = mean(p_att), passYDS = mean(p_yds),
+                                               passCMP = mean(p_cmp), passPCT = mean(p_pct),
+                                               rushTD = mean(r_td), passTD = mean(p_td))
+b1gSum <- b1g %>% group_by(year) %>% summarise(rushATT = mean(r_att), rushYDS = mean(r_yds),
+                                               passATT = mean(p_att), passYDS = mean(p_yds),
+                                               passCMP = mean(p_cmp), passPCT = mean(p_pct),
+                                               rushTD = mean(r_td), passTD = mean(p_td))
+b12Sum <- b12 %>% group_by(year) %>% summarise(rushATT = mean(r_att), rushYDS = mean(r_yds),
+                                               passATT = mean(p_att), passYDS = mean(p_yds),
+                                               passCMP = mean(p_cmp), passPCT = mean(p_pct),
+                                               rushTD = mean(r_td), passTD = mean(p_td))
+pacSum <- pac %>% group_by(year) %>% summarise(rushATT = mean(r_att), rushYDS = mean(r_yds),
+                                               passATT = mean(p_att), passYDS = mean(p_yds),
+                                               passCMP = mean(p_cmp), passPCT = mean(p_pct),
+                                               rushTD = mean(r_td), passTD = mean(p_td))
+accSum <- acc %>% group_by(year) %>% summarise(rushATT = mean(r_att), rushYDS = mean(r_yds),
+                                               passATT = mean(p_att), passYDS = mean(p_yds),
+                                               passCMP = mean(p_cmp), passPCT = mean(p_pct),
+                                               rushTD = mean(r_td), passTD = mean(p_td))
 
 saveRDS(secSum, file = "secSum.RDS")
 saveRDS(b1gSum, file = "b1gSum.RDS")
@@ -621,5 +643,72 @@ saveRDS(accSum, file = "accSum.RDS")
 p5 <- full_join(sec, 
       full_join(b1g, 
       full_join(b12, 
-      full_join(pac, acc, by=NULL), by=NULL), by=NULL), by=NULL) %>% group_by(year)
+      full_join(pac, acc, by=NULL), by=NULL), by=NULL), by=NULL)
+
+p5sum <- p5 %>% group_by(year, conference) %>% 
+  summarise(rushATT = mean(r_att), rushYDS = mean(r_yds), passATT = mean(p_att), 
+            passYDS = mean(p_yds), passCMP = mean(p_cmp), passPCT = mean(p_pct),
+            rushTD = mean(r_td), passTD = mean(p_td))
+
+saveRDS(p5, file = "p5.RDS")
+saveRDS(p5sum, file = "p5sum.RDS")
+
+#GT Tables Creation
+
+statistic <- c("Rushing Attempts", "Rushing Yards", "Passing Attempts", "Passing Yards", "Pass Completions", "Passing Completion Percentage", "Rushing Touchdowns", "Passing Touchdowns")
+secCor <- c(cor(sec$r_att, sec$c_w_pct), cor(sec$r_yds, sec$c_w_pct), cor(sec$p_att, sec$c_w_pct),
+            cor(sec$p_yds, sec$c_w_pct), cor(sec$p_cmp, sec$c_w_pct), cor(sec$p_pct, sec$c_w_pct),
+            cor(sec$r_td, sec$c_w_pct), cor(sec$p_td, sec$c_w_pct))
+b1gCor <- c(cor(b1g$r_att, b1g$c_w_pct), cor(b1g$r_yds, b1g$c_w_pct), cor(b1g$p_att, b1g$c_w_pct),
+            cor(b1g$p_yds, b1g$c_w_pct), cor(b1g$p_cmp, b1g$c_w_pct), cor(b1g$p_pct, b1g$c_w_pct),
+            cor(b1g$r_td, b1g$c_w_pct), cor(b1g$p_td, b1g$c_w_pct))
+b12Cor <- c(cor(b12$r_att, b12$c_w_pct), cor(b12$r_yds, b12$c_w_pct), cor(b12$p_att, b12$c_w_pct),
+            cor(b12$p_yds, b12$c_w_pct), cor(b12$p_cmp, b12$c_w_pct), cor(b12$p_pct, b12$c_w_pct),
+            cor(b12$r_td, b12$c_w_pct), cor(b12$p_td, b12$c_w_pct))
+pacCor <- c(cor(pac$r_att, pac$c_w_pct), cor(pac$r_yds, pac$c_w_pct), cor(pac$p_att, pac$c_w_pct),
+            cor(pac$p_yds, pac$c_w_pct), cor(pac$p_cmp, pac$c_w_pct), cor(pac$p_pct, pac$c_w_pct),
+            cor(pac$r_td, pac$c_w_pct), cor(pac$p_td, pac$c_w_pct))
+accCor <- c(cor(acc$r_att, acc$c_w_pct), cor(acc$r_yds, acc$c_w_pct), cor(acc$p_att, acc$c_w_pct),
+            cor(acc$p_yds, acc$c_w_pct), cor(acc$p_cmp, acc$c_w_pct), cor(acc$p_pct, acc$c_w_pct),
+            cor(acc$r_td, acc$c_w_pct), cor(acc$p_td, acc$c_w_pct))
+p5Cor <- c(cor(p5$r_att, p5$w_pct), cor(p5$r_yds, p5$w_pct), cor(p5$p_att, p5$w_pct),
+            cor(p5$p_yds, p5$w_pct), cor(p5$p_cmp, p5$w_pct), cor(p5$p_pct, p5$w_pct),
+            cor(p5$r_td, p5$w_pct), cor(p5$p_td, p5$w_pct))
+
+secCorgt <- data.frame(statistic, secCor) %>% arrange(desc(secCor)) %>% gt() %>% 
+  tab_header(title = "Correlation To Conference Win Percentage", 
+             subtitle = "In the Southeastern Conference") %>% 
+  cols_label(statistic = "Statistical Category", secCor = "Correlation Coefficient")
+
+b1gCorgt <- data.frame(statistic, b1gCor) %>% arrange(desc(b1gCor)) %>% gt() %>% 
+  tab_header(title = "Correlation To Conference Win Percentage", 
+             subtitle = "In the Big Ten Conference") %>% 
+  cols_label(statistic = "Statistical Category", b1gCor = "Correlation Coefficient")
+
+b12Corgt <- data.frame(statistic, b12Cor) %>% arrange(desc(b12Cor)) %>% gt() %>% 
+  tab_header(title = "Correlation To Conference Win Percentage", 
+             subtitle = "In the Big 12 Conference") %>% 
+  cols_label(statistic = "Statistical Category", b12Cor = "Correlation Coefficient")
+
+pacCorgt <- data.frame(statistic, pacCor) %>% arrange(desc(pacCor)) %>% gt() %>% 
+  tab_header(title = "Correlation To Conference Win Percentage", 
+             subtitle = "In the Pacific-12 Conference") %>% 
+  cols_label(statistic = "Statistical Category", pacCor = "Correlation Coefficient")
+
+accCorgt <- data.frame(statistic, accCor) %>% arrange(desc(accCor)) %>% gt() %>% 
+  tab_header(title = "Correlation To Conference Win Percentage", 
+             subtitle = "In the Atlantic Coast Conference") %>% 
+  cols_label(statistic = "Statistical Category", accCor = "Correlation Coefficient")
+
+p5Corgt <- data.frame(statistic, p5Cor) %>% arrange(desc(p5Cor)) %>% gt() %>% 
+  tab_header(title = "Correlation To Win Percentage", 
+             subtitle = "In All Power 5 Conferences") %>% 
+  cols_label(statistic = "Statistical Category", p5Cor = "Correlation Coefficient")
+
+saveRDS(secCorgt, file = "secCorgt.RDS")
+saveRDS(b1gCorgt, file = "b1gCorgt.RDS")
+saveRDS(b12Corgt, file = "b12Corgt.RDS")
+saveRDS(pacCorgt, file = "pacCorgt.RDS")
+saveRDS(accCorgt, file = "accCorgt.RDS")
+saveRDS(p5Corgt, file = "p5Corgt.RDS")
 ```
