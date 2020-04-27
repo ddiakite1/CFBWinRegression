@@ -248,6 +248,7 @@ server <- function(input, output, session) {
       ggplot(aes(x = year, y = average)) +
       geom_point() + geom_line() + geom_smooth(method = lm, se=FALSE) + 
       labs(x = "Season", y = input$statb1g) +
+      scale_x_continuous(breaks = c(2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019)) +
       theme_classic()})
   
   output$b12SumPlot <- renderPlot({
@@ -255,6 +256,7 @@ server <- function(input, output, session) {
       ggplot(aes(x = year, y = average)) +
       geom_point() + geom_line() + geom_smooth(method = lm, se=FALSE) + 
       labs(x = "Season", y = input$statb12) +
+      scale_x_continuous(breaks = c(2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019)) +
       theme_classic()})
   
   output$pacSumPlot <- renderPlot({
@@ -262,6 +264,7 @@ server <- function(input, output, session) {
       ggplot(aes(x = year, y = average)) +
       geom_point() + geom_line() + geom_smooth(method = lm, se=FALSE) + 
       labs(x = "Season", y = input$statp12) +
+      scale_x_continuous(breaks = c(2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019)) +
       theme_classic()})
   
   output$accSumPlot <-renderPlot({
@@ -269,54 +272,63 @@ server <- function(input, output, session) {
       ggplot(aes(x = year, y = average)) +
       geom_point() + geom_line() + geom_smooth(method = lm, se=FALSE) + 
       labs(x = "Season", y = input$statacc) +
+      scale_x_continuous(breaks = c(2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019)) +
       theme_classic()})
   
   output$p5sumPlot <-renderPlot({
     p5sum %>% filter(statistic == input$statp5) %>%
       ggplot(aes(x = year, y = average)) +
-      geom_point() + geom_smooth(method = lm, se=FALSE) + labs(x = "Season", y = input$statp5) +
+      geom_point() + geom_smooth(method = lm, se=FALSE) + 
+      labs(x = "Season", y = input$statp5) +
+      scale_x_continuous(breaks = c(2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019)) +
       theme_classic()})
   
   output$secCorplot <- renderPlot({
     sec %>% select(rushATT, rushYDS, passATT, passYDS, passCMP, passPCT, rushTD, passTD, c_w_pct) %>% 
       pivot_longer(-c_w_pct, names_to = "statistic", values_to = "value") %>%
       filter(statistic == input$secCor) %>%
-      ggplot(aes(x = value, y = c_w_pct)) + geom_point() + geom_smooth(method = lm, se=FALSE)
+      ggplot(aes(x = value, y = c_w_pct)) + geom_point() + geom_smooth(method = lm, se=FALSE) +
+      labs(x = input$secCor, y = "Conference Win Percentage")
   })
   
   output$b1gCorplot <- renderPlot({
     b1g %>% select(rushATT, rushYDS, passATT, passYDS, passCMP, passPCT, rushTD, passTD, c_w_pct) %>% 
       pivot_longer(-c_w_pct, names_to = "statistic", values_to = "value") %>%
       filter(statistic == input$b1gCor) %>%
-      ggplot(aes(x = value, y = c_w_pct)) + geom_point() + geom_smooth(method = lm, se=FALSE)
+      ggplot(aes(x = value, y = c_w_pct)) + geom_point() + geom_smooth(method = lm, se=FALSE) +
+      labs(x = input$b1gCor, y = "Conference Win Percentage")
   })
   
   output$b12Corplot <- renderPlot({
     b12 %>% select(rushATT, rushYDS, passATT, passYDS, passCMP, passPCT, rushTD, passTD, c_w_pct) %>% 
       pivot_longer(-c_w_pct, names_to = "statistic", values_to = "value") %>%
       filter(statistic == input$b12Cor) %>%
-      ggplot(aes(x = value, y = c_w_pct)) + geom_point() + geom_smooth(method = lm, se=FALSE)
+      ggplot(aes(x = value, y = c_w_pct)) + geom_point() + geom_smooth(method = lm, se=FALSE) +
+      labs(x = input$b12Cor, y = "Conference Win Percentage")
   })
   
   output$pacCorplot <- renderPlot({
     pac %>% select(rushATT, rushYDS, passATT, passYDS, passCMP, passPCT, rushTD, passTD, c_w_pct) %>% 
       pivot_longer(-c_w_pct, names_to = "statistic", values_to = "value") %>%
       filter(statistic == input$pacCor) %>%
-      ggplot(aes(x = value, y = c_w_pct)) + geom_point() + geom_smooth(method = lm, se=FALSE)
+      ggplot(aes(x = value, y = c_w_pct)) + geom_point() + geom_smooth(method = lm, se=FALSE) +
+      labs(x = input$pacCor, y = "Conference Win Percentage")
   })
   
   output$accCorplot <- renderPlot({
     acc %>% select(rushATT, rushYDS, passATT, passYDS, passCMP, passPCT, rushTD, passTD, c_w_pct) %>% 
       pivot_longer(-c_w_pct, names_to = "statistic", values_to = "value") %>%
       filter(statistic == input$accCor) %>%
-      ggplot(aes(x = value, y = c_w_pct)) + geom_point() + geom_smooth(method = lm, se=FALSE)
+      ggplot(aes(x = value, y = c_w_pct)) + geom_point() + geom_smooth(method = lm, se=FALSE) +
+      labs(x = input$accCor, y = "Conference Win Percentage")
   })
   
   output$p5Corplot <- renderPlot({
     p5 %>% select(rushATT, rushYDS, passATT, passYDS, passCMP, passPCT, rushTD, passTD, w_pct) %>% 
       pivot_longer(-w_pct, names_to = "statistic", values_to = "value") %>%
       filter(statistic == input$p5Cor) %>%
-      ggplot(aes(x = value, y = w_pct)) + geom_point() + geom_smooth(method = lm, se=FALSE)
+      ggplot(aes(x = value, y = w_pct)) + geom_point() + geom_smooth(method = lm, se=FALSE) +
+      labs(x = input$p5Cor, y = "Conference Win Percentage")
   })
   
   output$secCor3d <- renderRglwidget({
