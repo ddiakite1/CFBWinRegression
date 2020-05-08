@@ -1,4 +1,4 @@
-# CFB-Win-Regression
+# CFB Win Regression Model
 
 Repo Guide
 ----------
