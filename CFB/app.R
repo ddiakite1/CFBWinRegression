@@ -260,7 +260,7 @@ server <- function(input, output, session) {
             select(-conference) %>%
             pivot_longer(-year, names_to = "statistic", values_to = "average") %>%
             filter(statistic == input$confStat) %>%
-            mutate(statistic = recode(statistic, "rushATT"="Rushing Attempts", "rushYDS"="Rushing Yards",
+            mutate(average = round(average, 2), statistic = recode(statistic, "rushATT"="Rushing Attempts", "rushYDS"="Rushing Yards",
                                       "passATT"="Passing Attempts", "passYDS"="Passing Yards",
                                       "passCMP"="Pass Completions", "passPCT"="Completion Percentage",
                                       "rushTD"="Rushing Touchdowns", "passTD"="Passing Touchdowns"))
