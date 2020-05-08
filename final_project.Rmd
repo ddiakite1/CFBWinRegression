@@ -7,11 +7,22 @@ output: html_document
 *link to github repository:* https://github.com/ddiakite1/final_project.git
 
 ## About 
-  Growing up, football was always a big part of my life. In an attempt to win games, teams differing amounts of run and pass plays. Over time, you can see that running the ball and passing the ball have varying success rates year by year. In this project I will study the trends in teams being more likely to run/pass the ball, and the success of each at certain time periods.
-  
-  Along with this, there are five major conferences in college football, often referred to as the "Power 5". These five conferences are as follows: the BIG 10, the PAC 12, the SEC, the BIG 12, and the ACC. From these five conferences come majority of the powerhouse teams in college football, as well as the most successful teams. Within each conference, teams play each other and a conference champion is determined by a conference championship game. Now, there is even a four team playoff system to determine the sole national champion. By exploring data from 2010 to present date in each of these power five conferences, I will be able to determine which play styles work best in each conference as well as on a countrywide scale, and I could draw comparisons and contrasts between conferences.
-  
-  As for my data, I collected it from multiple different sports-reference.com subpages. The datasests that I get from sports-reference.com are downloaded as excel files, and I read them in using read_excel() inside the readxl library. I plan on reading in the data from all Power 5 conferences for the 2010-2019 college football seasons, and modeling correlations between team success and team rushing/passing success.
+Growing up, football has always been a big part of my life. In an attempt to win games, teams 
+use differing amounts of run and pass plays. Over time, you can see that running the ball and passing 
+the ball have varying success rates year by year at each level of football. In this project I will study the trends in teams being more likely to run/pass the ball, and look to find which has had more success.
+
+There are five major conferences in college football, often referred to as the 'Power 5'. These 
+five conferences are as follows: the Southeastern Conference (SEC), the Big Ten Conference (B1G 10), 
+the Big 12 Conference (BIG 12), the Pacific-12 Conference (PAC 12), and the Atlantic Coast Conference (ACC). From these five conferences come majority of the powerhouse teams in college football, as well as the most popular teams. Within each conference, teams play each other and a conference champion is 
+determined by a conference championship game. As of 2014, there is a four team playoff system to 
+determine the sole national champion. By exploring data from 2010 to present date in each of these 
+power five conferences, I will be able to determine which play styles work best in each conference as 
+well as on a countrywide scale, and I can draw comparisons and contrasts between conferences.
+
+As for my data, I collected it from multiple different sports-reference.com subpages.
+The datasests that I retrieved from sports-reference.com were downloaded as excel files, read using the readxl library within r.
+
+My name is Diassa Diakité and I am an undergraduate at Harvard studying Government with a specialization in Data Science. I can be reached at ddiakite@college.harvard.edu
   
 ## Setup Chunk
 ```{r setup, include=FALSE}
@@ -592,63 +603,22 @@ acc <- acc %>%
 
 
 ## Data Fun
-```{r, echo = FALSE, message=FALSE}
+```{r, include = FALSE, message=FALSE}
 # message=FALSE so messages on updated column names does not come up
 # echo = FALSE so that all of the code is not shown in the html
-
-#create a plot using data on rushing attempts per year for each school
-secRushTrend <- sec %>%
-  ggplot(aes(x = year, y = r_att, color = school)) +
-  geom_point_interactive(aes(tooltip = sec$r_att)) +
-  geom_line() +
-  labs(x = "Year", y = "Avg. Rushing Attempts per Game")
-
-girafe(ggobj = secRushTrend)
-
-saveRDS(sec, file = "SEC.RDS")
-saveRDS(b1g, file = "B1G.RDS")
-saveRDS(b12, file = "B12.RDS")
-saveRDS(pac, file = "PAC.RDS")
-saveRDS(acc, file = "ACC.RDS")
-
-# Summarized Rushing and Passing data by conference
-secSum <- sec %>% group_by(year) %>% summarise(rushATT = mean(r_att), rushYDS = mean(r_yds),
-                                               passATT = mean(p_att), passYDS = mean(p_yds),
-                                               passCMP = mean(p_cmp), passPCT = mean(p_pct),
-                                               rushTD = mean(r_td), passTD = mean(p_td))
-b1gSum <- b1g %>% group_by(year) %>% summarise(rushATT = mean(r_att), rushYDS = mean(r_yds),
-                                               passATT = mean(p_att), passYDS = mean(p_yds),
-                                               passCMP = mean(p_cmp), passPCT = mean(p_pct),
-                                               rushTD = mean(r_td), passTD = mean(p_td))
-b12Sum <- b12 %>% group_by(year) %>% summarise(rushATT = mean(r_att), rushYDS = mean(r_yds),
-                                               passATT = mean(p_att), passYDS = mean(p_yds),
-                                               passCMP = mean(p_cmp), passPCT = mean(p_pct),
-                                               rushTD = mean(r_td), passTD = mean(p_td))
-pacSum <- pac %>% group_by(year) %>% summarise(rushATT = mean(r_att), rushYDS = mean(r_yds),
-                                               passATT = mean(p_att), passYDS = mean(p_yds),
-                                               passCMP = mean(p_cmp), passPCT = mean(p_pct),
-                                               rushTD = mean(r_td), passTD = mean(p_td))
-accSum <- acc %>% group_by(year) %>% summarise(rushATT = mean(r_att), rushYDS = mean(r_yds),
-                                               passATT = mean(p_att), passYDS = mean(p_yds),
-                                               passCMP = mean(p_cmp), passPCT = mean(p_pct),
-                                               rushTD = mean(r_td), passTD = mean(p_td))
-
-saveRDS(secSum, file = "secSum.RDS")
-saveRDS(b1gSum, file = "b1gSum.RDS")
-saveRDS(b12Sum, file = "b12Sum.RDS")
-saveRDS(pacSum, file = "pacSum.RDS")
-saveRDS(accSum, file = "accSum.RDS")
 
 # All CFB stats
 p5 <- full_join(sec, 
       full_join(b1g, 
       full_join(b12, 
-      full_join(pac, acc, by=NULL), by=NULL), by=NULL), by=NULL)
+      full_join(pac, acc, by=NULL), by=NULL), by=NULL), by=NULL) %>%
+  rename(rushATT = r_att, rushYDS = r_yds, passATT = p_att, passYDS = p_yds,
+         passCMP = p_cmp, passPCT = p_pct, rushTD = r_td, passTD = p_td)
 
 p5sum <- p5 %>% group_by(year, conference) %>% 
-  summarise(rushATT = mean(r_att), rushYDS = mean(r_yds), passATT = mean(p_att), 
-            passYDS = mean(p_yds), passCMP = mean(p_cmp), passPCT = mean(p_pct),
-            rushTD = mean(r_td), passTD = mean(p_td))
+  summarise(rushATT = mean(rushATT), rushYDS = mean(rushYDS), passATT = mean(passATT), 
+            passYDS = mean(passYDS), passCMP = mean(passCMP), passPCT = mean(passPCT),
+            rushTD = mean(rushTD), passTD = mean(passTD))
 
 saveRDS(p5, file = "p5.RDS")
 saveRDS(p5sum, file = "p5sum.RDS")
@@ -656,59 +626,31 @@ saveRDS(p5sum, file = "p5sum.RDS")
 #GT Tables Creation
 
 statistic <- c("Rushing Attempts", "Rushing Yards", "Passing Attempts", "Passing Yards", "Pass Completions", "Passing Completion Percentage", "Rushing Touchdowns", "Passing Touchdowns")
-secCor <- c(cor(sec$r_att, sec$c_w_pct), cor(sec$r_yds, sec$c_w_pct), cor(sec$p_att, sec$c_w_pct),
-            cor(sec$p_yds, sec$c_w_pct), cor(sec$p_cmp, sec$c_w_pct), cor(sec$p_pct, sec$c_w_pct),
-            cor(sec$r_td, sec$c_w_pct), cor(sec$p_td, sec$c_w_pct))
-b1gCor <- c(cor(b1g$r_att, b1g$c_w_pct), cor(b1g$r_yds, b1g$c_w_pct), cor(b1g$p_att, b1g$c_w_pct),
-            cor(b1g$p_yds, b1g$c_w_pct), cor(b1g$p_cmp, b1g$c_w_pct), cor(b1g$p_pct, b1g$c_w_pct),
-            cor(b1g$r_td, b1g$c_w_pct), cor(b1g$p_td, b1g$c_w_pct))
-b12Cor <- c(cor(b12$r_att, b12$c_w_pct), cor(b12$r_yds, b12$c_w_pct), cor(b12$p_att, b12$c_w_pct),
-            cor(b12$p_yds, b12$c_w_pct), cor(b12$p_cmp, b12$c_w_pct), cor(b12$p_pct, b12$c_w_pct),
-            cor(b12$r_td, b12$c_w_pct), cor(b12$p_td, b12$c_w_pct))
-pacCor <- c(cor(pac$r_att, pac$c_w_pct), cor(pac$r_yds, pac$c_w_pct), cor(pac$p_att, pac$c_w_pct),
-            cor(pac$p_yds, pac$c_w_pct), cor(pac$p_cmp, pac$c_w_pct), cor(pac$p_pct, pac$c_w_pct),
-            cor(pac$r_td, pac$c_w_pct), cor(pac$p_td, pac$c_w_pct))
-accCor <- c(cor(acc$r_att, acc$c_w_pct), cor(acc$r_yds, acc$c_w_pct), cor(acc$p_att, acc$c_w_pct),
-            cor(acc$p_yds, acc$c_w_pct), cor(acc$p_cmp, acc$c_w_pct), cor(acc$p_pct, acc$c_w_pct),
-            cor(acc$r_td, acc$c_w_pct), cor(acc$p_td, acc$c_w_pct))
-p5Cor <- c(cor(p5$r_att, p5$w_pct), cor(p5$r_yds, p5$w_pct), cor(p5$p_att, p5$w_pct),
-            cor(p5$p_yds, p5$w_pct), cor(p5$p_cmp, p5$w_pct), cor(p5$p_pct, p5$w_pct),
-            cor(p5$r_td, p5$w_pct), cor(p5$p_td, p5$w_pct))
 
-secCorgt <- data.frame(statistic, secCor) %>% arrange(desc(secCor)) %>% gt() %>% 
+p5Cor <- c(cor(p5$rushATT, p5$w_pct), cor(p5$rushYDS, p5$w_pct), cor(p5$passATT, p5$w_pct),
+            cor(p5$passYDS, p5$w_pct), cor(p5$passCMP, p5$w_pct), cor(p5$passPCT, p5$w_pct),
+            cor(p5$rushTD, p5$w_pct), cor(p5$passTD, p5$w_pct))
+
+confCorfile <- p5 %>% filter(conference=="SEC")
+
+confCorgtfile <- c(cor(confCorfile$rushATT, confCorfile$c_w_pct), 
+                 cor(confCorfile$rushYDS, confCorfile$c_w_pct), 
+                 cor(confCorfile$passATT, confCorfile$c_w_pct),
+                 cor(confCorfile$passYDS, confCorfile$c_w_pct), 
+                 cor(confCorfile$passCMP, confCorfile$c_w_pct), 
+                 cor(confCorfile$passPCT, confCorfile$c_w_pct),
+                 cor(confCorfile$rushTD, confCorfile$c_w_pct), 
+                 cor(confCorfile$passTD, confCorfile$c_w_pct))
+
+confCorgt <- data.frame(statistic, confCorgtfile) %>% arrange(desc(confCorgtfile)) %>% gt() %>% 
   tab_header(title = "Correlation To Conference Win Percentage", 
              subtitle = "In the Southeastern Conference") %>% 
-  cols_label(statistic = "Statistical Category", secCor = "Correlation Coefficient")
-
-b1gCorgt <- data.frame(statistic, b1gCor) %>% arrange(desc(b1gCor)) %>% gt() %>% 
-  tab_header(title = "Correlation To Conference Win Percentage", 
-             subtitle = "In the Big Ten Conference") %>% 
-  cols_label(statistic = "Statistical Category", b1gCor = "Correlation Coefficient")
-
-b12Corgt <- data.frame(statistic, b12Cor) %>% arrange(desc(b12Cor)) %>% gt() %>% 
-  tab_header(title = "Correlation To Conference Win Percentage", 
-             subtitle = "In the Big 12 Conference") %>% 
-  cols_label(statistic = "Statistical Category", b12Cor = "Correlation Coefficient")
-
-pacCorgt <- data.frame(statistic, pacCor) %>% arrange(desc(pacCor)) %>% gt() %>% 
-  tab_header(title = "Correlation To Conference Win Percentage", 
-             subtitle = "In the Pacific-12 Conference") %>% 
-  cols_label(statistic = "Statistical Category", pacCor = "Correlation Coefficient")
-
-accCorgt <- data.frame(statistic, accCor) %>% arrange(desc(accCor)) %>% gt() %>% 
-  tab_header(title = "Correlation To Conference Win Percentage", 
-             subtitle = "In the Atlantic Coast Conference") %>% 
-  cols_label(statistic = "Statistical Category", accCor = "Correlation Coefficient")
+  cols_label(statistic = "Statistical Category", confCorgtfile = "Correlation Coefficient")
 
 p5Corgt <- data.frame(statistic, p5Cor) %>% arrange(desc(p5Cor)) %>% gt() %>% 
   tab_header(title = "Correlation To Win Percentage", 
              subtitle = "In All Power 5 Conferences") %>% 
   cols_label(statistic = "Statistical Category", p5Cor = "Correlation Coefficient")
 
-saveRDS(secCorgt, file = "secCorgt.RDS")
-saveRDS(b1gCorgt, file = "b1gCorgt.RDS")
-saveRDS(b12Corgt, file = "b12Corgt.RDS")
-saveRDS(pacCorgt, file = "pacCorgt.RDS")
-saveRDS(accCorgt, file = "accCorgt.RDS")
 saveRDS(p5Corgt, file = "p5Corgt.RDS")
 ```
