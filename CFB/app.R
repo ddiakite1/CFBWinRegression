@@ -25,7 +25,7 @@ p5Corgt <- readRDS("p5Corgt.RDS")
 
 ui <-
     navbarPage(theme = shinytheme("cosmo"),
-               "College Football Stats",
+               "College Football Win Regression Model",
                tabPanel("About",
                         fixedRow(
                             column(5,
