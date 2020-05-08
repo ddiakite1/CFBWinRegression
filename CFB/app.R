@@ -53,7 +53,10 @@ ui <-
                                    p("My name is Diassa Diakité and I am an undergraduate at Harvard studying Government with a specialization in Data Science.
                                       I can be reached at ", a("ddiakite@college.harvard.edu", href = "mailto: ddiakite@college.harvard.edu"))
                             ),
-                            column(7, style = "margin-top: 5%", img(src = "acc.jpg", width="100%", height="100%"), align="center"
+                            column(7, style = "margin-top: 5%", img(src = "acc.jpg", width="100%", height="100%"), 
+                                   p("Source:", 
+                                     a("The New York Times", href = "https://static01.nyt.com/images/2020/01/07/sports/07cfp-schedule-01/merlin_166448439_713b3e2f-b3f2-4f51-800b-ac7c6b2e9279-superJumbo.jpg?quality=90&auto=webp"), align="right"), 
+                                   align="center"
                             )
                         )
                     ),
@@ -79,7 +82,10 @@ ui <-
                                          column(8, plotlyOutput("confSumPlotly", height = "100%"), align="center")
                                      ),
                                      fixedRow(
-                                         column(7, img(src = "b1g.jpg", width="100%", height="100%"), align="center"
+                                         column(7, img(src = "b1g.jpg", width="100%", height="100%"), 
+                                                p("Source:", 
+                                                  a("BTN.com", href="https://btn.com/wp-content/uploads/2016/11/usatsi_9656092.jpg?resize=1110,624"), align="right"), 
+                                                align="center"
                                          ), 
                                          column(5, style = "margin-top: 10%",
                                                 p("The first step in my investigation was finding the trends in each 
@@ -110,7 +116,10 @@ ui <-
                                                 ), align="center"
                                          ),
                                      fluidRow( 
-                                         column(7, img(src = "b12.jpg", width="100%", height="100%"), align="center"
+                                         column(7, img(src = "b12.jpg", width="100%", height="100%"), 
+                                                p("Source:", 
+                                                  a("medium.com", href="https://miro.medium.com/max/2000/1*NakxTvd6tFRohJ5_XbLoKA.jpeg"), align="right"), 
+                                                align="center"
                                          ), 
                                          column(5, style = "margin-top: 10%",
                                                 p("When looking at all of the Power 5 data together and attempting to find a 
@@ -240,7 +249,7 @@ ui <-
                                    )
                         ),
                         fixedRow(
-                            column(4, style = "margin-top: 10%",
+                            column(4, style = "margin-top: 15%",
                                    radioButtons("d3select", "Select a Conference",
                                                 choices = list("SEC", "B1G 10", "BIG 12",
                                                                "PAC 12", "ACC"),
@@ -284,7 +293,7 @@ server <- function(input, output, session) {
         sum <- p5sum %>% select(-conference) %>% 
             pivot_longer(-year, names_to = "statistic", values_to = "average") %>% 
             filter(statistic == input$statp5) %>%
-            mutate(statistic = recode(statistic, "rushATT"="Rushing Attempts", "rushYDS"="Rushing Yards",
+            mutate(average = round(average, 2), statistic = recode(statistic, "rushATT"="Rushing Attempts", "rushYDS"="Rushing Yards",
                                       "passATT"="Passing Attempts", "passYDS"="Passing Yards",
                                       "passCMP"="Pass Completions", "passPCT"="Completion Percentage",
                                       "rushTD"="Rushing Touchdowns", "passTD"="Passing Touchdowns"))
@@ -309,7 +318,7 @@ server <- function(input, output, session) {
             select(rushATT, rushYDS, passATT, passYDS, passCMP, passPCT, rushTD, passTD, c_w_pct) %>%
             pivot_longer(-c_w_pct, names_to = "statistic", values_to = "average") %>%
             filter(statistic == input$confCor) %>%
-            mutate(statistic = recode(statistic, "rushATT"="Rushing Attempts", "rushYDS"="Rushing Yards",
+            mutate(average = round(average, 2), statistic = recode(statistic, "rushATT"="Rushing Attempts", "rushYDS"="Rushing Yards",
                                       "passATT"="Passing Attempts", "passYDS"="Passing Yards",
                                       "passCMP"="Pass Completions", "passPCT"="Completion Percentage",
                                       "rushTD"="Rushing Touchdowns", "passTD"="Passing Touchdowns"))
@@ -330,21 +339,21 @@ server <- function(input, output, session) {
     
     output$p5Corplotly <- renderPlotly({
         cor <- p5 %>% select(rushATT, rushYDS, passATT, passYDS, passCMP, passPCT, rushTD, passTD, w_pct) %>% 
-            pivot_longer(-w_pct, names_to = "statistic", values_to = "value") %>% 
+            pivot_longer(-w_pct, names_to = "statistic", values_to = "average") %>% 
             filter(statistic == input$p5Cor) %>%
-            mutate(statistic = recode(statistic, "rushATT"="Rushing Attempts", "rushYDS"="Rushing Yards",
+            mutate(average = round(average, 2), statistic = recode(statistic, "rushATT"="Rushing Attempts", "rushYDS"="Rushing Yards",
                                       "passATT"="Passing Attempts", "passYDS"="Passing Yards",
                                       "passCMP"="Pass Completions", "passPCT"="Completion Percentage",
                                       "rushTD"="Rushing Touchdowns", "passTD"="Passing Touchdowns"))
         
-        fit <- lm(cor$w_pct*100 ~ cor$value)
+        fit <- lm(cor$w_pct*100 ~ cor$average)
         
         plot_ly(data = cor, type = 'scatter', mode = 'markers') %>%
-            add_trace(x = ~value, y = ~w_pct*100, text = ~statistic, 
+            add_trace(x = ~average, y = ~w_pct*100, text = ~statistic, 
                       hovertemplate=paste('%{text}: %{x}',
                                           '<br>Win %: %{y}'),
                       marker=list(color='black')) %>%
-            add_trace(x = cor$value, y = fitted(fit), mode = 'lines', 
+            add_trace(x = cor$average, y = fitted(fit), mode = 'lines', 
                       line = list(color='dodgerblue'), hoverinfo='skip') %>% 
             layout(xaxis=list(title=paste("Average", cor$statistic[1], "Per Game"), zeroline=FALSE), 
                    yaxis=list(title="Win Percentage", zeroline=FALSE), 
