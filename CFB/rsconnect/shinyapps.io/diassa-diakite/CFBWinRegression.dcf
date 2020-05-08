@@ -1,0 +1,12 @@
+name: CFBWinRegression
+title: CFBWinRegression
+username:
+account: diassa-diakite
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2267816
+bundleId: 3121624
+url: https://diassa-diakite.shinyapps.io/CFBWinRegression/
+when: 1588961278.52556
+asMultiple: FALSE
+asStatic: FALSE
