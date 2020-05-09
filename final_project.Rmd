@@ -7,9 +7,9 @@ output: html_document
 *link to github repository:* https://github.com/ddiakite1/final_project.git
 
 ## About 
-Growing up, football has always been a big part of my life. In an attempt to win games, teams 
+Growing up, football has always been a big part of our lives. In an attempt to win games, teams 
 use differing amounts of run and pass plays. Over time, you can see that running the ball and passing 
-the ball have varying success rates year by year at each level of football. In this project I will study the trends in teams being more likely to run/pass the ball, and look to find which has had more success.
+the ball have varying success rates year by year at each level of football. In this project we will study the trends in teams being more likely to run/pass the ball, and look to find which has had more success.
 
 There are five major conferences in college football, often referred to as the 'Power 5'. These 
 five conferences are as follows: the Southeastern Conference (SEC), the Big Ten Conference (B1G 10), 
@@ -19,10 +19,19 @@ determine the sole national champion. By exploring data from 2010 to present dat
 power five conferences, I will be able to determine which play styles work best in each conference as 
 well as on a countrywide scale, and I can draw comparisons and contrasts between conferences.
 
-As for my data, I collected it from multiple different sports-reference.com subpages.
+As for data, we collected it from multiple different sports-reference.com subpages.
 The datasests that I retrieved from sports-reference.com were downloaded as excel files, read using the readxl library within r.
 
+Creators
+
+Diassa Diakité
+
 My name is Diassa Diakité and I am an undergraduate at Harvard studying Government with a specialization in Data Science. I can be reached at ddiakite@college.harvard.edu
+
+Mohamed Mabizari
+
+My name is Mohamed Mabizari and I am an undergraduate at Harvard studying Sociology with a secondary in Computer Science. I can be reached at mmabizari@college.harvard.edu
+
   
 ## Setup Chunk
 ```{r setup, include=FALSE}
