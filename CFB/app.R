@@ -30,9 +30,9 @@ ui <-
                         fixedRow(
                             column(5,
                                    h1("Background"),
-                                   p("Growing up, football has always been a big part of my life. In an attempt to win games, teams 
+                                   p("Growing up, football has always been a big part of our lives. In an attempt to win games, teams 
                                    use differing amounts of run and pass plays. Over time, you can see that running the ball and passing 
-                                   the ball have varying success rates year by year at each level of football. In this project I will study the trends in teams 
+                                   the ball have varying success rates year by year at each level of football. In this project we will study the trends in teams 
                                      being more likely to run/pass the ball, and look to find which has had more success."),
                                    p("There are five major conferences in college football, often referred to as the 'Power 5'. These 
                                    five conferences are as follows: the Southeastern Conference (SEC), the Big Ten Conference (B1G 10), 
@@ -41,18 +41,25 @@ ui <-
                                    popular teams. Within each conference, teams play each other and a conference champion is 
                                    determined by a conference championship game. As of 2014, there is a four team playoff system to 
                                    determine the sole national champion. By exploring data from 2010 to present date in each of these 
-                                   power five conferences, I will be able to determine which play styles work best in each conference as 
-                                    well as on a countrywide scale, and I can draw comparisons and contrasts between conferences."),
-                                   h1("My Data"),
-                                   p("As for my data, I collected it from multiple different", a("sports-reference.com", href = "https://www.sports-reference.com/cfb/"), "subpages.
-                                   The datasests that I retrieved from sports-reference.com were downloaded as excel files, read using the readxl library within r."),
-                                   p("You can find the code for this project on my ",
+                                   power five conferences, we will be able to determine which play styles work best in each conference as 
+                                    well as on a countrywide scale, and we can in turn draw comparisons and contrasts between conferences."),
+                                   h1("Data"),
+                                   p("As for data, it was collected from multiple different", a("sports-reference.com", href = "https://www.sports-reference.com/cfb/"), "subpages.
+                                   The datasests retrieved from sports-reference.com were downloaded as excel files, read using the readxl library within r."),
+                                   p("You can find the code for this project on ",
                                      a("GitHub",
                                        href = "https://github.com/ddiakite1/CFB-Win-Regression",)),
-                                   h1("About Me"),
+                                   h1("Creators"),
+                                   p(strong("Diassa Diakité")),
                                    p("My name is Diassa Diakité and I am an undergraduate at Harvard studying Government with a specialization in Data Science.
-                                      I can be reached at ", a("ddiakite@college.harvard.edu", href = "mailto: ddiakite@college.harvard.edu"))
-                            ),
+                                      I can be reached at ", a("ddiakite@college.harvard.edu", href = "mailto: ddiakite@college.harvard.edu")),
+                                   p(strong("Mohamed Mabizari")),
+                                   p("My name is Mohamed Mabizari and I am an undergraduate at Harvard studying Sociology with a secondary in Computer Science.
+                                      I can be reached at ", a("mmabizari@college.harvard.edu", href = "mailto: mmabizari@college.harvard.edu")),
+                                   
+                        ),
+                            
+                            
                             column(7, style = "margin-top: 5%", img(src = "acc.jpg", width="100%", height="100%"), 
                                    p("Source:", 
                                      a("The New York Times", href = "https://static01.nyt.com/images/2020/01/07/sports/07cfp-schedule-01/merlin_166448439_713b3e2f-b3f2-4f51-800b-ac7c6b2e9279-superJumbo.jpg?quality=90&auto=webp"), align="right"), 
@@ -89,11 +96,11 @@ ui <-
                                          ), 
                                          column(5, style = "margin-top: 10%",
                                                 p("The first step in my investigation was finding the trends in each 
-                                                statistical category over the span of data I had collected (10 seasons). 
+                                                statistical category over the span of data collected (10 seasons). 
                                                 This data was fairly simple to access from ",
                                                   a("Sports-Reference.com",
                                                     href = "https://www.sports-reference.com/cfb/"),
-                                                  ". For each conference and statistical category selected, I show the average 
+                                                  ". For each conference and statistical category selected, we show the average 
                                                 across all teams over the course of a season. This provides a rough summary
                                                 of the tendencies of each Power Five conference."
                                                 ), align="center"
@@ -123,14 +130,14 @@ ui <-
                                          ), 
                                          column(5, style = "margin-top: 10%",
                                                 p("When looking at all of the Power 5 data together and attempting to find a 
-                                            trend over the past ten seasons, it becomes clear that the trend has been near 
+                                            trend over the past ten seasons, it became clear that the trend has been near 
                                             flat for all statistical categories. While in a specific conference the styles 
                                             of play may have changed over recent history, on a larger scale it is relatively 
                                             the same."
                                                 ),
                                                 p("Upon coming to the conclusion that the average number of each statistical category 
                                             has remained about the same over the last ten seasons of Power Five college football 
-                                            play, I was more inclined to shifting my focus towards finding which of these
+                                            play, we were more inclined to shift the focus towards finding which of these
                                             statistics have best correlated to success over this period of time."
                                                 ), align="center"
                                          )
@@ -197,7 +204,7 @@ ui <-
                                      and team success in all of Power Five college football as a whole and 
                                      using some deeper interpretation and knowledge of college football,
                                      certain conclusions can be drawn about the reasoning behind each 
-                                     statistic's correlation to success. Here I will address the two statistics
+                                     statistic's correlation to success. Here we will address the two statistics
                                      which correlated best to success, as well as the two with the worst correlations."),
                                                 p(strong("Rushing Touchdowns:"), "With a correlation coefficient of", strong("0.58"), ", rushing touchdowns 
                                      is the statistic that best predicts a team's success. The average win percentage of the
@@ -206,8 +213,8 @@ ui <-
                                      a role is a team's ability to score in the red zone. While a percentage of rushing touchdowns
                                      may come on long runs, majority of all scoring is executed from the 20 yard-line and within."),
                                                 p(strong("Completion Percentage:"), "With a correlation coefficient of", strong("0.47"), ", completion percentage would
-                                     be the second best statistical predictor of the ones I tested. The average win percentage of the
-                                     teams with the top twenty-five completion percentages in my dataset was", strong("76.3%"), ". I could best 
+                                     be the second best statistical predictor of the ones tested. The average win percentage of the
+                                     teams with the top twenty-five completion percentages in my dataset was", strong("76.3%"), ". We could best 
                                      attribute this statistic's moderately good correlation to a team's ability to control the clock through
                                      posession of the football. While an incomplete pass stops the clock and gives the opponent more time,
                                      a complete pass causes the clock to continue running when the ballcarrier is tackled in play. This gives
@@ -233,14 +240,14 @@ ui <-
                tabPanel("Running vs. Passing",
                         fixedRow(
                             column(4, style = "margin-top: 10%", align="center",
-                                   p("After examining each statistic's correlation to the team's win percentage, I was brought 
-                                     back to my original inquiry:", strong("Which has been more successfull, running or passing the ball?"),
+                                   p("After examining each statistic's correlation to the team's win percentage, we were brought 
+                                     back to the original inquiry:", strong("Which has been more successfull, running or passing the ball?"),
                                      "By taking just Rushing Attempts, Passing Attempts, and Win Percentage, and plotting on a 3-dimmensional 
                                      plane, it is apparent that", strong("running the football"), "has had a more positive effect."),
-                                   p("Although there are no significantly strong correlations between any of the statistics I tested and win 
+                                   p("Although there are no significantly strong correlations between any of the statistics tested and win 
                                      percentage, there is most definitely a difference between the running and passing attempts, as passing attempts 
                                      proved to be the worst indicator of success with a slight negative correlation, and rushing attempts had a 
-                                     moderate correlation. From this, I can conclude that over the past ten seasons of power five football, running 
+                                     moderate correlation. From this, it can be concluded that over the past ten seasons of power five football, running 
                                      thee football has been more successfull than passing."),
                                    p("Below is the same 3-dimmensional plot shown for each conference.")
                                    ),
